@@ -1,6 +1,6 @@
 package com.co.ceiba.establecimiento.entidad;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +23,7 @@ public class SalidaEntity {
 	private EntradaEntity entradaEntity;
 
 	@Column(name = "fecha_salida", nullable = false)
-	private Date fechaSalida;
+	private Timestamp fechaSalida;
 
 	@Column(name = "valor", nullable = false)
 	private Double valor;
@@ -44,11 +44,11 @@ public class SalidaEntity {
 		this.entradaEntity = entradaEntity;
 	}
 
-	public Date getFechaSalida() {
+	public Timestamp getFechaSalida() {
 		return fechaSalida;
 	}
 
-	public void setFechaSalida(Date fechaSalida) {
+	public void setFechaSalida(Timestamp fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
 

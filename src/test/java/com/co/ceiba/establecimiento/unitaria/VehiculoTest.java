@@ -36,7 +36,6 @@ public class VehiculoTest {
 
 		assertEquals(PLACA, vehiculo.getPlaca());
 		assertEquals(CILINDRAJE, ((Moto) vehiculo).getCilindraje());
-
 	}
 
 }

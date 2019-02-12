@@ -5,9 +5,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,9 +29,10 @@ import com.co.ceiba.establecimiento.testdatabuilder.MotoTestDataBuilder;
 @DataJpaTest
 public class ControlEntradaTest {
 
-	public static final String PLACA_EMPIEZA_A = "AXT002";
-	public static final String PLACA_EMPIEZA_DIFERENTE_A = "TXT002";
-	public static final LocalDate FECHA_LUNES = LocalDate.of(2019, 2, 11);
+	private static final String PLACA_EMPIEZA_A = "AXT002";
+	private static final String PLACA_EMPIEZA_DIFERENTE_A = "TXT002";
+	private static final LocalDateTime FECHA_LUNES = LocalDateTime.of(2019, 2, 11, 10, 10);
+	private static final LocalDateTime FECHA_MARTES = LocalDateTime.of(2019, 2, 12, 8, 20);
 
 	@Test
 	public void hayDisponibilidadCarro() {
@@ -74,28 +74,34 @@ public class ControlEntradaTest {
 	public void ingresoValidoSegunDiaReglaInvalidaDiaFecha() {
 		Vehiculo vehiculo = new MotoTestDataBuilder().conPlaca(PLACA_EMPIEZA_A).build();
 		ControlEntrada controlEntrada = ControlEntradaFactory.getInstance().getControlEntrada(vehiculo);
-		assertFalse(
-				controlEntrada.ingresoValidoSegunDia(vehiculo, new Date(java.sql.Date.valueOf(FECHA_LUNES).getTime())));
+		assertFalse(controlEntrada.ingresoValidoSegunDia(vehiculo, FECHA_LUNES));
+	}
+
+	@Test
+	public void ingresoValidoSegunDiaReglaValidaDiaFechaCriterioEmpieza() {
+		Vehiculo vehiculo = new MotoTestDataBuilder().conPlaca(PLACA_EMPIEZA_A).build();
+		ControlEntrada controlEntrada = ControlEntradaFactory.getInstance().getControlEntrada(vehiculo);
+		assertTrue(controlEntrada.ingresoValidoSegunDia(vehiculo, FECHA_MARTES));
 	}
 
 	@Test
 	public void ingresoValidoSegunDiaReglaValidaDiaFecha() {
 		Vehiculo vehiculo = new MotoTestDataBuilder().conPlaca(PLACA_EMPIEZA_DIFERENTE_A).build();
 		ControlEntrada controlEntrada = ControlEntradaFactory.getInstance().getControlEntrada(vehiculo);
-		assertTrue(
-				controlEntrada.ingresoValidoSegunDia(vehiculo, new Date(java.sql.Date.valueOf(FECHA_LUNES).getTime())));
+		assertTrue(controlEntrada.ingresoValidoSegunDia(vehiculo, FECHA_LUNES));
 	}
 
 	@Test
 	public void existeEntradaRegistrada() {
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();
 		EntradaRepository entradaRepository = mock(EntradaRepository.class);
-		when(entradaRepository.listarEntradasActivasPorVehiculo(vehiculo.getPlaca())).thenReturn(Arrays
-				.asList(EntradaBuilder.convertirAEntity(new EntradaTestDataBuilder().conVehiculo(vehiculo).build())));
+		when(entradaRepository.listarEntradasActivasPorVehiculo(vehiculo.getPlaca()))
+				.thenReturn(Arrays.asList(EntradaBuilder.convertirAEntity(new EntradaTestDataBuilder()
+						.conTipoVehiculo(TipoVehiculo.MOTO.toString()).conVehiculo(vehiculo).build())));
 		ControlEntrada controlEntrada = ControlEntradaFactory.getInstance().getControlEntrada(vehiculo);
 		assertTrue(controlEntrada.existeEntradaRegistrada(vehiculo, entradaRepository));
 	}
-	
+
 	@Test
 	public void noExisteEntradaRegistrada() {
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();

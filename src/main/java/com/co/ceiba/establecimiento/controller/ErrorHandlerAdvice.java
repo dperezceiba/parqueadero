@@ -19,14 +19,14 @@ public class ErrorHandlerAdvice {
 	public ResponseEntity<ErrorResponse> handleException(EntradaException ex, WebRequest request) {
 		ErrorResponse excepcion = new ErrorResponse(Calendar.getInstance().getTime(), ex.getMessage(),
 				request.getDescription(false));
-		return new ResponseEntity<>(excepcion, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(excepcion, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(SalidaException.class)
 	public ResponseEntity<ErrorResponse> handleException(SalidaException ex, WebRequest request) {
 		ErrorResponse excepcion = new ErrorResponse(Calendar.getInstance().getTime(), ex.getMessage(),
 				request.getDescription(false));
-		return new ResponseEntity<>(excepcion, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(excepcion, HttpStatus.BAD_REQUEST);
 	}
 
 }

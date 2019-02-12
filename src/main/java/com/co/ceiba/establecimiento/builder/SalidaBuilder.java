@@ -2,6 +2,7 @@ package com.co.ceiba.establecimiento.builder;
 
 import com.co.ceiba.establecimiento.dominio.Salida;
 import com.co.ceiba.establecimiento.entidad.SalidaEntity;
+import com.co.ceiba.establecimiento.util.FechaUtils;
 
 public final class SalidaBuilder {
 	private SalidaBuilder() {
@@ -10,7 +11,8 @@ public final class SalidaBuilder {
 	public static Salida convertirADominio(SalidaEntity salidaEntity) {
 		Salida salida = null;
 		if (salidaEntity != null) {
-			salida = new Salida(salidaEntity.getId(), salidaEntity.getFechaSalida(), salidaEntity.getValor());
+			salida = new Salida(salidaEntity.getId(), FechaUtils.convertir(salidaEntity.getFechaSalida()),
+					salidaEntity.getValor());
 			salida.setEntrada(EntradaBuilder.convertirADominio(salidaEntity.getEntradaEntity()));
 		}
 		return salida;

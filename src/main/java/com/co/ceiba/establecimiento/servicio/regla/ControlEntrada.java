@@ -1,9 +1,7 @@
 package com.co.ceiba.establecimiento.servicio.regla;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.co.ceiba.establecimiento.dominio.Vehiculo;
@@ -17,10 +15,9 @@ public abstract class ControlEntrada {
 	public ControlEntrada() {
 	}
 
-	public Boolean ingresoValidoSegunDia(Vehiculo vehiculo, Date fechaEntrada) {
-		if (vehiculo.getPlaca().startsWith(CRITERIO_INICIO_RESTRICCION)) {
-			LocalDate fechaIngreso = fechaEntrada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			DayOfWeek diaSemana = fechaIngreso.getDayOfWeek();
+	public Boolean ingresoValidoSegunDia(Vehiculo vehiculo, LocalDateTime fechaEntrada) {
+		if (vehiculo.getPlaca().toUpperCase().startsWith(CRITERIO_INICIO_RESTRICCION)) {
+			DayOfWeek diaSemana = fechaEntrada.getDayOfWeek();
 			return diaSemana != DayOfWeek.SUNDAY && diaSemana != DayOfWeek.MONDAY;
 		}
 		return true;

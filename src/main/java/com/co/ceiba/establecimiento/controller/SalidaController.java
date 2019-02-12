@@ -1,5 +1,7 @@
 package com.co.ceiba.establecimiento.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,8 @@ public class SalidaController {
 
 	@PostMapping
 	public Salida registrarSalida(@RequestBody Entrada entrada) {
-		return salidaService.generarSalida(entrada);
+		LocalDateTime fechaSalida = LocalDateTime.now();
+		return salidaService.generarSalida(entrada, fechaSalida);
 	}
 
 }

@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.co.ceiba.establecimiento.entidad.SalidaEntity;
 
 public interface SalidaRepository extends JpaRepository<SalidaEntity, Long> {
-	
+
 	@Query(value = "SELECT sal.* FROM salida sal WHERE sal.d_entrada = ?1", nativeQuery = true)
 	List<SalidaEntity> consultarPorEntrada(Long idEntrada);
-	
+
 }

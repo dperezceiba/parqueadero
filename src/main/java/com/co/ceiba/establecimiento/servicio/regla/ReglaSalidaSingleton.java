@@ -6,7 +6,7 @@ import com.co.ceiba.establecimiento.dominio.Vehiculo;
 public final class ReglaSalidaSingleton {
 
 	private static final Double CILINDRAJE_SUP = 500.0;
-	private static final Double VALOR_EXCEDENTE = 2000.0;
+	public static final Double VALOR_EXCEDENTE = 2000.0;
 
 	private static final Integer LIMITE_DIA_INFERIOR = 9;
 	private static final Integer LIMITE_DIA_SUPERIOR = 24;

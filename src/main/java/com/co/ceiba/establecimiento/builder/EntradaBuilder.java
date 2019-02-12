@@ -7,6 +7,7 @@ import com.co.ceiba.establecimiento.dominio.Moto;
 import com.co.ceiba.establecimiento.entidad.CarroEntity;
 import com.co.ceiba.establecimiento.entidad.EntradaEntity;
 import com.co.ceiba.establecimiento.entidad.MotoEntity;
+import com.co.ceiba.establecimiento.util.FechaUtils;
 
 public final class EntradaBuilder {
 
@@ -16,12 +17,13 @@ public final class EntradaBuilder {
 	public static Entrada convertirADominio(EntradaEntity entradaEntity) {
 		Entrada entrada = null;
 		if (entradaEntity != null) {
-			entrada = new Entrada(entradaEntity.getId(), entradaEntity.getFechaEntrada(), entradaEntity.getActivo());
+			entrada = new Entrada(entradaEntity.getId(), FechaUtils.convertir(entradaEntity.getFechaEntrada()),
+					entradaEntity.getActivo());
+			entrada.setTipoVehiculo(entradaEntity.getTipoVehiculo().toString());
 			if (entradaEntity.getVehiculoEntity() instanceof CarroEntity) {
-				entrada.setTipoVehiculo(TipoVehiculo.CARRO.toString());
 				entrada.setVehiculo(CarroBuilder.convertirADominio((CarroEntity) entradaEntity.getVehiculoEntity()));
 			} else {
-				entrada.setTipoVehiculo(TipoVehiculo.MOTO.toString());
+
 				entrada.setVehiculo(MotoBuilder.convertirADominio((MotoEntity) entradaEntity.getVehiculoEntity()));
 			}
 		}
@@ -33,7 +35,7 @@ public final class EntradaBuilder {
 		if (entrada != null) {
 			entradaEntity = new EntradaEntity();
 			entradaEntity.setActivo(entrada.getActivo());
-			entradaEntity.setFechaEntrada(entrada.getFechaEntrada());
+			entradaEntity.setFechaEntrada(FechaUtils.convertir(entrada.getFechaEntrada()));
 			entradaEntity.setId(entrada.getIdEntrada());
 			if (entrada.getVehiculo() instanceof Carro) {
 				entradaEntity.setTipoVehiculo(TipoVehiculo.CARRO);

@@ -17,7 +17,7 @@ public class ControlSalida {
 		this.tarifas = tarifas;
 	}
 
-	private Tarifa getTarifaPorModalidad(ModalidadTarifa modalidadTarifa) {
+	public Tarifa getTarifaPorModalidad(ModalidadTarifa modalidadTarifa) {
 		return tarifas.stream().filter(obj -> ModalidadTarifa.valueOf(obj.getModalidad()) == modalidadTarifa)
 				.findFirst().orElse(new Tarifa(BigDecimal.ZERO.doubleValue()));
 	}

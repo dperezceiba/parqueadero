@@ -1,10 +1,10 @@
 package com.co.ceiba.establecimiento.dominio;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Entrada {
 	private Long idEntrada;
-	private Date fechaEntrada;
+	private LocalDateTime fechaEntrada;
 	private Boolean activo;
 	private Vehiculo vehiculo;
 	private String tipoVehiculo;
@@ -12,17 +12,17 @@ public class Entrada {
 	public Entrada() {
 	}
 
-	public Entrada(Long idEntrada, Date fechaEntrada, Boolean activo) {
-		this.setIdEntrada(idEntrada);
+	public Entrada(Long idEntrada, LocalDateTime fechaEntrada, Boolean activo) {
+		this.idEntrada = idEntrada;
 		this.fechaEntrada = fechaEntrada;
 		this.activo = activo;
 	}
 
-	public Date getFechaEntrada() {
+	public LocalDateTime getFechaEntrada() {
 		return fechaEntrada;
 	}
 
-	public void setFechaEntrada(Date fechaEntrada) {
+	public void setFechaEntrada(LocalDateTime fechaEntrada) {
 		this.fechaEntrada = fechaEntrada;
 	}
 

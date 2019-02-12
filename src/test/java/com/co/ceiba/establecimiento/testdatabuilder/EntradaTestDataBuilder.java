@@ -1,6 +1,6 @@
 package com.co.ceiba.establecimiento.testdatabuilder;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.co.ceiba.establecimiento.constante.TipoVehiculo;
 import com.co.ceiba.establecimiento.dominio.Entrada;
@@ -9,13 +9,13 @@ import com.co.ceiba.establecimiento.dominio.Vehiculo;
 public class EntradaTestDataBuilder {
 
 	private static final Long ID_CONST = 1L;
-	private static final Date FECHA_ENTRADA_CONS = new Date();
+	private static final LocalDateTime FECHA_ENTRADA_CONS = LocalDateTime.now();
 	private static final Boolean ACTIVO_CONST = Boolean.TRUE;
 	private static final Vehiculo VEHICULO_CONST = new CarroTestDataBuilder().build();
 	private static final String TIPO_VEHICULO_CONST = TipoVehiculo.CARRO.toString();
 
 	private Long id;
-	private Date fechaEntrada;
+	private LocalDateTime fechaEntrada;
 	private Boolean activo;
 	private Vehiculo vehiculo;
 	private String tipoVehiculo;
@@ -33,7 +33,7 @@ public class EntradaTestDataBuilder {
 		return this;
 	}
 
-	public EntradaTestDataBuilder conFechaEntrada(Date fechaEntrada) {
+	public EntradaTestDataBuilder conFechaEntrada(LocalDateTime fechaEntrada) {
 		this.fechaEntrada = fechaEntrada;
 		return this;
 	}

@@ -4,7 +4,7 @@ import com.co.ceiba.establecimiento.dominio.Carro;
 
 public class CarroTestDataBuilder {
 
-	private static final String PLACA_CONST = "TRD058";
+	private static final String PLACA_CONST = "TRO058";
 	private static final String MODELO_CONST = "2018";
 
 	private String placa;

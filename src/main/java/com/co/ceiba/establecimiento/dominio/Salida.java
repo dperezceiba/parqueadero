@@ -1,18 +1,18 @@
 package com.co.ceiba.establecimiento.dominio;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Salida {
 	private Long id;
-	private Date fechaSalida;
+	private LocalDateTime fechaSalida;
 	private Double valor;
 	private Entrada entrada;
-	
+
 	public Salida() {
 		super();
 	}
-	
-	public Salida(Long id, Date fechaSalida, Double valor) {
+
+	public Salida(Long id, LocalDateTime fechaSalida, Double valor) {
 		this.id = id;
 		this.fechaSalida = fechaSalida;
 		this.valor = valor;
@@ -26,11 +26,11 @@ public class Salida {
 		this.id = id;
 	}
 
-	public Date getFechaSalida() {
+	public LocalDateTime getFechaSalida() {
 		return fechaSalida;
 	}
 
-	public void setFechaSalida(Date fechaSalida) {
+	public void setFechaSalida(LocalDateTime fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
 
@@ -49,7 +49,5 @@ public class Salida {
 	public void setEntrada(Entrada entrada) {
 		this.entrada = entrada;
 	}
-	
-	
-	
+
 }

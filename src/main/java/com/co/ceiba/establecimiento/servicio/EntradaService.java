@@ -1,6 +1,6 @@
 package com.co.ceiba.establecimiento.servicio;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,13 +20,14 @@ import com.co.ceiba.establecimiento.entidad.VehiculoEntity;
 import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
 import com.co.ceiba.establecimiento.servicio.regla.ControlEntrada;
 import com.co.ceiba.establecimiento.servicio.regla.ControlEntradaFactory;
+import com.co.ceiba.establecimiento.util.FechaUtils;
 
 @Service
 public class EntradaService {
 
-	private static final String MSG_NO_HAY_DISPONIBILIDAD = "Actualmente no se encuentran estacionamientos disponibles para este vehiculo";
-	private static final String MSG_INGRESO_NO_PERMITIDO = "Ingreso no permitido para vehiculos con esta esta placa";
-	private static final String MSG_INGRESO_EXISTENTE = "Vehiculo ya se encuentra ingresado";
+	public static final String MSG_NO_HAY_DISPONIBILIDAD = "Actualmente no se encuentran estacionamientos disponibles para este vehiculo";
+	public static final String MSG_INGRESO_NO_PERMITIDO = "Ingreso no permitido para vehiculos con esta esta placa";
+	public static final String MSG_INGRESO_EXISTENTE = "Vehiculo ya se encuentra ingresado";
 
 	private EntradaRepository entradaRepository;
 
@@ -34,25 +35,24 @@ public class EntradaService {
 		this.entradaRepository = entradaRepository;
 	}
 
-	public Entrada registrarIngreso(Vehiculo vehiculo) {
-		Date fechaEntrada = new Date();
+	public Entrada registrarIngreso(Vehiculo vehiculo, LocalDateTime fechaEntrada) {
 		validarIngreso(vehiculo, fechaEntrada);
 		EntradaEntity entradaEntity = new EntradaEntity();
 		entradaEntity.setActivo(Boolean.TRUE);
-		entradaEntity.setFechaEntrada(fechaEntrada);
+		entradaEntity.setFechaEntrada(FechaUtils.convertir(fechaEntrada));
 		entradaEntity.setTipoVehiculo(getTipovehiculo(vehiculo));
 		entradaEntity.setVehiculoEntity(getVehiculoEntity(vehiculo));
 		entradaRepository.save(entradaEntity);
 		return EntradaBuilder.convertirADominio(entradaEntity);
 	}
 
-	public void validarIngreso(Vehiculo vehiculo, Date fechaEntrada) throws EntradaException {
+	private void validarIngreso(Vehiculo vehiculo, LocalDateTime fechaEntrada) {
 		ControlEntrada controlEntrada = ControlEntradaFactory.getInstance().getControlEntrada(vehiculo);
 		if (!controlEntrada.hayDisponibilidad(entradaRepository)) {
 			throw new EntradaException(MSG_NO_HAY_DISPONIBILIDAD);
 		} else if (!controlEntrada.ingresoValidoSegunDia(vehiculo, fechaEntrada)) {
 			throw new EntradaException(MSG_INGRESO_NO_PERMITIDO);
-		}else if(controlEntrada.existeEntradaRegistrada(vehiculo, entradaRepository)) {
+		} else if (controlEntrada.existeEntradaRegistrada(vehiculo, entradaRepository)) {
 			throw new EntradaException(MSG_INGRESO_EXISTENTE);
 		}
 	}
@@ -67,8 +67,8 @@ public class EntradaService {
 	}
 
 	public List<Entrada> listarEntradasActivas(TipoVehiculo tipoVehiculo) {
-		return entradaRepository.listarEntradasActivas(tipoVehiculo.toString()).stream().map(EntradaBuilder::convertirADominio)
-				.collect(Collectors.toList());
+		return entradaRepository.listarEntradasActivas(tipoVehiculo.toString()).stream()
+				.map(EntradaBuilder::convertirADominio).collect(Collectors.toList());
 	}
 
 }

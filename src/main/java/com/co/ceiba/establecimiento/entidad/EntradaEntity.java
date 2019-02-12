@@ -1,6 +1,6 @@
 package com.co.ceiba.establecimiento.entidad;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +24,7 @@ public class EntradaEntity {
 	private Long id;
 
 	@Column(name = "fecha_entrada", nullable = false)
-	private Date fechaEntrada;
+	private Timestamp fechaEntrada;
 
 	@Column(name = "activo", nullable = false)
 	private Boolean activo;
@@ -46,11 +46,11 @@ public class EntradaEntity {
 		this.id = id;
 	}
 
-	public Date getFechaEntrada() {
+	public Timestamp getFechaEntrada() {
 		return fechaEntrada;
 	}
 
-	public void setFechaEntrada(Date fechaEntrada) {
+	public void setFechaEntrada(Timestamp fechaEntrada) {
 		this.fechaEntrada = fechaEntrada;
 	}
 
