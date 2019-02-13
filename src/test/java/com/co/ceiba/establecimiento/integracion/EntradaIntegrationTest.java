@@ -6,8 +6,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -33,12 +31,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest(classes = CeibaEstablecimientoApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EntradaIntegrationTest {
 
+	private static final String PLACA_DUPLICADA = "RIO036";
+
 	private static final String LOCALHOST_URL = "http://localhost:";
 
 	private static final String URL_INGRESO_CARRO = "/entrada/carro";
 	private static final String URL_INGRESO_MOTO = "/entrada/moto";
-
-	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@LocalServerPort
 	private int port;
@@ -75,8 +73,9 @@ public class EntradaIntegrationTest {
 
 	@Test
 	public void registrarIngresoMotoDuplicado() throws JsonParseException, JsonMappingException, IOException {
-		Moto moto = new MotoTestDataBuilder().build();
+		Moto moto = new MotoTestDataBuilder().conPlaca(PLACA_DUPLICADA).build();
 		HttpEntity<Moto> entity = new HttpEntity<>(moto, headers);
+		restTemplate.exchange(createURLWithPort(URL_INGRESO_MOTO), HttpMethod.POST, entity, String.class);
 		ResponseEntity<String> response = restTemplate.exchange(createURLWithPort(URL_INGRESO_MOTO), HttpMethod.POST,
 				entity, String.class);
 		ObjectMapper objectMapper = new ObjectMapper();
