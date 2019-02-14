@@ -23,7 +23,6 @@ public final class EntradaBuilder {
 			if (entradaEntity.getVehiculoEntity() instanceof CarroEntity) {
 				entrada.setVehiculo(CarroBuilder.convertirADominio((CarroEntity) entradaEntity.getVehiculoEntity()));
 			} else {
-
 				entrada.setVehiculo(MotoBuilder.convertirADominio((MotoEntity) entradaEntity.getVehiculoEntity()));
 			}
 		}

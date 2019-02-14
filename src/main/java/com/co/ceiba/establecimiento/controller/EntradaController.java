@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,16 +24,14 @@ public class EntradaController {
 	public EntradaController(EntradaService entradaService) {
 		this.entradaService = entradaService;
 	}
-	
-	@CrossOrigin
+
 	@PostMapping("/carro")
 	public ResponseEntity<Entrada> registrarEntrada(@RequestBody Carro carro) {
 		LocalDateTime fechaEntrada = LocalDateTime.now();
 		Entrada entrada = entradaService.registrarIngreso(carro, fechaEntrada);
 		return ResponseEntity.ok(entrada);
 	}
-	
-	@CrossOrigin
+
 	@PostMapping("/moto")
 	public ResponseEntity<Entrada> registrarEntrada(@RequestBody Moto moto) {
 		LocalDateTime fechaEntrada = LocalDateTime.now();
@@ -42,7 +39,6 @@ public class EntradaController {
 		return ResponseEntity.ok(entrada);
 	}
 
-	@CrossOrigin
 	@GetMapping("/activas")
 	public List<Entrada> listarEntradasActivas() {
 		return entradaService.listarEntradasActivas();
