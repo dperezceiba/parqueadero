@@ -2,8 +2,6 @@ package com.co.ceiba.establecimiento.integracion;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,16 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.co.ceiba.establecimiento.dominio.Entrada;
 import com.co.ceiba.establecimiento.dominio.ErrorResponse;
-import com.co.ceiba.establecimiento.dominio.Moto;
 import com.co.ceiba.establecimiento.dominio.Vehiculo;
 import com.co.ceiba.establecimiento.servicio.SalidaService;
-import com.co.ceiba.establecimiento.servicio.regla.ControlEntrada;
-import com.co.ceiba.establecimiento.servicio.regla.ControlSalida;
 import com.co.ceiba.establecimiento.testdatabuilder.CarroTestDataBuilder;
-import com.co.ceiba.establecimiento.testdatabuilder.MotoTestDataBuilder;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

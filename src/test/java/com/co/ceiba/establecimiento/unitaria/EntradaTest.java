@@ -25,6 +25,7 @@ import com.co.ceiba.establecimiento.dominio.excepcion.EntradaException;
 import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
 import com.co.ceiba.establecimiento.servicio.EntradaService;
 import com.co.ceiba.establecimiento.servicio.regla.ControlEntrada;
+import com.co.ceiba.establecimiento.servicio.regla.ControlEntradaMoto;
 import com.co.ceiba.establecimiento.testdatabuilder.CarroTestDataBuilder;
 import com.co.ceiba.establecimiento.testdatabuilder.EntradaTestDataBuilder;
 import com.co.ceiba.establecimiento.testdatabuilder.MotoTestDataBuilder;
@@ -55,6 +56,22 @@ public class EntradaTest {
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();
 		Entrada entrada = entradaService.registrarIngreso(vehiculo, FECHA_PRUEBA);
 		assertTrue(entrada.getActivo());
+	}
+
+	@Test
+	public void registrarEntradaMotoSinDisponibilidadTest() {
+		EntradaRepository entradaRepository = mock(EntradaRepository.class);
+		EntradaService entradaService = new EntradaService(entradaRepository);
+		when(entradaRepository.cantidadEntradasActivas(TipoVehiculo.MOTO.toString()))
+				.thenReturn(ControlEntradaMoto.MAXIMO_MOTO);
+		Vehiculo vehiculo = new MotoTestDataBuilder().build();
+		try {
+			entradaService.registrarIngreso(vehiculo, FECHA_PRUEBA);
+			fail();
+		} catch (EntradaException e) {
+			assertEquals(ControlEntrada.MSG_NO_HAY_DISPONIBILIDAD, e.getMessage());
+		}
+
 	}
 
 	@Test
