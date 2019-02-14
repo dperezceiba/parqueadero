@@ -18,7 +18,7 @@ public final class ValorTarifa {
 	}
 
 	public static List<Tarifa> getTarifasCarro() {
-		List<Tarifa> tarifas = new ArrayList<Tarifa>();
+		List<Tarifa> tarifas = new ArrayList<>();
 		tarifas.add(new Tarifa(VALOR_DIA_CARRO, TipoVehiculo.CARRO.toString(), ModalidadTarifa.DIA.toString()));
 		tarifas.add(new Tarifa(VALOR_HORA_CARRO, TipoVehiculo.CARRO.toString(), ModalidadTarifa.HORA.toString()));
 		return tarifas;
