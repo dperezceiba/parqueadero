@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.co.ceiba.establecimiento.builder.CarroBuilder;
@@ -29,8 +27,6 @@ import com.co.ceiba.establecimiento.util.TipoUtils;
 @Service
 public class EntradaService {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(EntradaService.class);
-
 	private EntradaRepository entradaRepository;
 	private CarroRepository carroRepository;
 	private MotoRepository motoRepository;
@@ -46,7 +42,6 @@ public class EntradaService {
 		ControlEntrada controlEntrada = ControlEntradaFactory.getInstance().getControlEntrada(vehiculo, fechaEntrada,
 				entradaRepository);
 		controlEntrada.validarIngreso();
-		LOGGER.info("Valido el ingreso del vehiculo................................");
 		VehiculoEntity vehiculoEntity = getVehiculoEntity(vehiculo);
 		EntradaEntity entradaEntity = new EntradaEntity();
 		entradaEntity.setActivo(Boolean.TRUE);
