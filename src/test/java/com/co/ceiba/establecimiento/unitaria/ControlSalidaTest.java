@@ -2,14 +2,13 @@ package com.co.ceiba.establecimiento.unitaria;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.co.ceiba.establecimiento.constante.ModalidadTarifa;
+import com.co.ceiba.establecimiento.constante.TipoVehiculo;
 import com.co.ceiba.establecimiento.constante.ValorTarifa;
 import com.co.ceiba.establecimiento.dominio.Tarifa;
 import com.co.ceiba.establecimiento.dominio.Vehiculo;
@@ -35,10 +34,10 @@ public class ControlSalidaTest {
 	@Test
 	public void controlarSalidaCarroHora() {
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
-		List<Tarifa> tarifas = ValorTarifa.getTarifasCarro();
-		ControlSalida controlSalida = new ControlSalida(vehiculo, tarifas);
+		ControlSalida controlSalida = new ControlSalida(vehiculo);
 		Double total = controlSalida.totalPagarSalida(SIETE_HORAS);
-		Tarifa tarifaHora = controlSalida.getTarifaPorModalidad(ModalidadTarifa.HORA);
+		Tarifa tarifaHora = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoVehiculo.CARRO,
+				ModalidadTarifa.HORA);
 		Double esperado = tarifaHora.getValor() * SIETE_HORAS;
 		assertEquals(esperado, total);
 	}
@@ -46,10 +45,10 @@ public class ControlSalidaTest {
 	@Test
 	public void controlarSalidaMotoHoraNormal() {
 		Vehiculo vehiculo = new MotoTestDataBuilder().conCilindraje(CILINDRAJE_MENOR_500).build();
-		List<Tarifa> tarifas = ValorTarifa.getTarifasMoto();
-		ControlSalida controlSalida = new ControlSalida(vehiculo, tarifas);
+		ControlSalida controlSalida = new ControlSalida(vehiculo);
 		Double total = controlSalida.totalPagarSalida(SIETE_HORAS);
-		Tarifa tarifaHora = controlSalida.getTarifaPorModalidad(ModalidadTarifa.HORA);
+		Tarifa tarifaHora = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoVehiculo.MOTO,
+				ModalidadTarifa.HORA);
 		Double esperado = tarifaHora.getValor() * SIETE_HORAS;
 		assertEquals(esperado, total);
 	}
@@ -57,10 +56,10 @@ public class ControlSalidaTest {
 	@Test
 	public void controlarSalidaMotoHoraClindrajeMayor() {
 		Vehiculo vehiculo = new MotoTestDataBuilder().conCilindraje(CILINDRAJE_MAYOR_500).build();
-		List<Tarifa> tarifas = ValorTarifa.getTarifasMoto();
-		ControlSalida controlSalida = new ControlSalida(vehiculo, tarifas);
+		ControlSalida controlSalida = new ControlSalida(vehiculo);
 		Double total = controlSalida.totalPagarSalida(SIETE_HORAS);
-		Tarifa tarifaHora = controlSalida.getTarifaPorModalidad(ModalidadTarifa.HORA);
+		Tarifa tarifaHora = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoVehiculo.MOTO,
+				ModalidadTarifa.HORA);
 		Double esperado = tarifaHora.getValor() * SIETE_HORAS + ReglaSalidaSingleton.VALOR_EXCEDENTE;
 		assertEquals(esperado, total);
 	}
@@ -68,11 +67,11 @@ public class ControlSalidaTest {
 	@Test
 	public void controlarSalidaCarroDiaHoras() {
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
-		List<Tarifa> tarifas = ValorTarifa.getTarifasCarro();
-		ControlSalida controlSalida = new ControlSalida(vehiculo, tarifas);
+		ControlSalida controlSalida = new ControlSalida(vehiculo);
 		Double total = controlSalida.totalPagarSalida(VEINTIOCHO_HORAS);
-		Tarifa tarifaHora = controlSalida.getTarifaPorModalidad(ModalidadTarifa.HORA);
-		Tarifa tarifaDia = controlSalida.getTarifaPorModalidad(ModalidadTarifa.DIA);
+		Tarifa tarifaHora = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoVehiculo.CARRO,
+				ModalidadTarifa.HORA);
+		Tarifa tarifaDia = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoVehiculo.CARRO, ModalidadTarifa.DIA);
 		Double esperado = tarifaDia.getValor() + tarifaHora.getValor() * (VEINTIOCHO_HORAS - VEINTICUATRO_HORAS);
 		assertEquals(esperado, total);
 	}
@@ -80,10 +79,9 @@ public class ControlSalidaTest {
 	@Test
 	public void controlarSalidaCarroDiaHorasDias() {
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
-		List<Tarifa> tarifas = ValorTarifa.getTarifasMoto();
-		ControlSalida controlSalida = new ControlSalida(vehiculo, tarifas);
+		ControlSalida controlSalida = new ControlSalida(vehiculo);
 		Double total = controlSalida.totalPagarSalida(TREINTAYCUATRO_HORAS);
-		Tarifa tarifaDia = controlSalida.getTarifaPorModalidad(ModalidadTarifa.DIA);
+		Tarifa tarifaDia = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoVehiculo.CARRO, ModalidadTarifa.DIA);
 		Double esperado = tarifaDia.getValor() + tarifaDia.getValor();
 		assertEquals(esperado, total);
 	}
@@ -91,10 +89,9 @@ public class ControlSalidaTest {
 	@Test
 	public void controlarSalidaCarroHoraMayor9() {
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
-		List<Tarifa> tarifas = ValorTarifa.getTarifasCarro();
-		ControlSalida controlSalida = new ControlSalida(vehiculo, tarifas);
+		ControlSalida controlSalida = new ControlSalida(vehiculo);
 		Double total = controlSalida.totalPagarSalida(DIEZ_HORAS);
-		Tarifa tarifaDia = controlSalida.getTarifaPorModalidad(ModalidadTarifa.DIA);
+		Tarifa tarifaDia = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoVehiculo.CARRO, ModalidadTarifa.DIA);
 		Double esperado = tarifaDia.getValor();
 		assertEquals(esperado, total);
 	}
@@ -102,11 +99,11 @@ public class ControlSalidaTest {
 	@Test
 	public void controlarSalidaMotoDiaHorasNormal() {
 		Vehiculo vehiculo = new MotoTestDataBuilder().conCilindraje(CILINDRAJE_MENOR_500).build();
-		List<Tarifa> tarifas = ValorTarifa.getTarifasMoto();
-		ControlSalida controlSalida = new ControlSalida(vehiculo, tarifas);
+		ControlSalida controlSalida = new ControlSalida(vehiculo);
 		Double total = controlSalida.totalPagarSalida(VEINTIOCHO_HORAS);
-		Tarifa tarifaHora = controlSalida.getTarifaPorModalidad(ModalidadTarifa.HORA);
-		Tarifa tarifaDia = controlSalida.getTarifaPorModalidad(ModalidadTarifa.DIA);
+		Tarifa tarifaHora = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoVehiculo.MOTO,
+				ModalidadTarifa.HORA);
+		Tarifa tarifaDia = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoVehiculo.MOTO, ModalidadTarifa.DIA);
 		Double esperado = tarifaDia.getValor() + tarifaHora.getValor() * (VEINTIOCHO_HORAS - VEINTICUATRO_HORAS);
 		assertEquals(esperado, total);
 	}
@@ -114,11 +111,11 @@ public class ControlSalidaTest {
 	@Test
 	public void controlarSalidaMotoDiaHorasCindrajeMayor() {
 		Vehiculo vehiculo = new MotoTestDataBuilder().conCilindraje(CILINDRAJE_MAYOR_500).build();
-		List<Tarifa> tarifas = ValorTarifa.getTarifasMoto();
-		ControlSalida controlSalida = new ControlSalida(vehiculo, tarifas);
+		ControlSalida controlSalida = new ControlSalida(vehiculo);
 		Double total = controlSalida.totalPagarSalida(VEINTIOCHO_HORAS);
-		Tarifa tarifaHora = controlSalida.getTarifaPorModalidad(ModalidadTarifa.HORA);
-		Tarifa tarifaDia = controlSalida.getTarifaPorModalidad(ModalidadTarifa.DIA);
+		Tarifa tarifaHora = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoVehiculo.MOTO,
+				ModalidadTarifa.HORA);
+		Tarifa tarifaDia = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoVehiculo.MOTO, ModalidadTarifa.DIA);
 		Double esperado = tarifaDia.getValor() + tarifaHora.getValor() * (VEINTIOCHO_HORAS - VEINTICUATRO_HORAS)
 				+ ReglaSalidaSingleton.VALOR_EXCEDENTE;
 		assertEquals(esperado, total);

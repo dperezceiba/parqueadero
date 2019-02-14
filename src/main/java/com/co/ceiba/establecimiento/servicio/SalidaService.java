@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 import com.co.ceiba.establecimiento.builder.EntradaBuilder;
 import com.co.ceiba.establecimiento.builder.SalidaBuilder;
 import com.co.ceiba.establecimiento.builder.VehiculoBuilder;
-import com.co.ceiba.establecimiento.constante.ValorTarifa;
 import com.co.ceiba.establecimiento.dominio.Entrada;
 import com.co.ceiba.establecimiento.dominio.Salida;
-import com.co.ceiba.establecimiento.dominio.Tarifa;
 import com.co.ceiba.establecimiento.dominio.excepcion.SalidaException;
 import com.co.ceiba.establecimiento.entidad.EntradaEntity;
 import com.co.ceiba.establecimiento.entidad.SalidaEntity;
@@ -58,9 +56,7 @@ public class SalidaService {
 	private Salida calcularTotalSalida(EntradaEntity entity, LocalDateTime fechaSalida) {
 		validarSalida(entity);
 		Long cantidadHoras = calcularCantidadHoras(FechaUtils.convertir(entity.getFechaEntrada()), fechaSalida);
-		List<Tarifa> tarifas = ValorTarifa.getTarifasPorTipo(entity.getTipoVehiculo());
-		ControlSalida controlSalida = new ControlSalida(VehiculoBuilder.convertirADominio(entity.getVehiculoEntity()),
-				tarifas);
+		ControlSalida controlSalida = new ControlSalida(VehiculoBuilder.convertirADominio(entity.getVehiculoEntity()));
 		Salida salida = new Salida();
 		salida.setEntrada(EntradaBuilder.convertirADominio(entity));
 		salida.setFechaSalida(fechaSalida);

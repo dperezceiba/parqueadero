@@ -22,7 +22,9 @@ import com.co.ceiba.establecimiento.constante.TipoVehiculo;
 import com.co.ceiba.establecimiento.dominio.Entrada;
 import com.co.ceiba.establecimiento.dominio.Vehiculo;
 import com.co.ceiba.establecimiento.dominio.excepcion.EntradaException;
+import com.co.ceiba.establecimiento.repositorio.CarroRepository;
 import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
+import com.co.ceiba.establecimiento.repositorio.MotoRepository;
 import com.co.ceiba.establecimiento.servicio.EntradaService;
 import com.co.ceiba.establecimiento.servicio.regla.ControlEntrada;
 import com.co.ceiba.establecimiento.servicio.regla.ControlEntradaMoto;
@@ -43,7 +45,9 @@ public class EntradaTest {
 	@Test
 	public void registrarEntradaCarroTest() {
 		EntradaRepository entradaRepository = mock(EntradaRepository.class);
-		EntradaService entradaService = new EntradaService(entradaRepository);
+		CarroRepository carroRepository = mock(CarroRepository.class);
+		MotoRepository motoRepository = mock(MotoRepository.class);
+		EntradaService entradaService = new EntradaService(entradaRepository, carroRepository, motoRepository);
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
 		Entrada entrada = entradaService.registrarIngreso(vehiculo, FECHA_PRUEBA);
 		assertTrue(entrada.getActivo());
@@ -52,7 +56,9 @@ public class EntradaTest {
 	@Test
 	public void registrarEntradaMotoTest() {
 		EntradaRepository entradaRepository = mock(EntradaRepository.class);
-		EntradaService entradaService = new EntradaService(entradaRepository);
+		CarroRepository carroRepository = mock(CarroRepository.class);
+		MotoRepository motoRepository = mock(MotoRepository.class);
+		EntradaService entradaService = new EntradaService(entradaRepository, carroRepository, motoRepository);
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();
 		Entrada entrada = entradaService.registrarIngreso(vehiculo, FECHA_PRUEBA);
 		assertTrue(entrada.getActivo());
@@ -61,7 +67,9 @@ public class EntradaTest {
 	@Test
 	public void registrarEntradaMotoSinDisponibilidadTest() {
 		EntradaRepository entradaRepository = mock(EntradaRepository.class);
-		EntradaService entradaService = new EntradaService(entradaRepository);
+		CarroRepository carroRepository = mock(CarroRepository.class);
+		MotoRepository motoRepository = mock(MotoRepository.class);
+		EntradaService entradaService = new EntradaService(entradaRepository, carroRepository, motoRepository);
 		when(entradaRepository.cantidadEntradasActivas(TipoVehiculo.MOTO.toString()))
 				.thenReturn(ControlEntradaMoto.MAXIMO_MOTO);
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();
@@ -78,7 +86,9 @@ public class EntradaTest {
 	public void verificarEntradasActivasMoto() {
 		Vehiculo vehiculo = new MotoTestDataBuilder().build();
 		EntradaRepository entradaRepository = mock(EntradaRepository.class);
-		EntradaService entradaService = new EntradaService(entradaRepository);
+		CarroRepository carroRepository = mock(CarroRepository.class);
+		MotoRepository motoRepository = mock(MotoRepository.class);
+		EntradaService entradaService = new EntradaService(entradaRepository, carroRepository, motoRepository);
 		when(entradaRepository.listarEntradasActivas(TipoVehiculo.MOTO.toString()))
 				.thenReturn(Arrays.asList(EntradaBuilder.convertirAEntity(new EntradaTestDataBuilder()
 						.conTipoVehiculo(TipoVehiculo.MOTO.toString()).conVehiculo(vehiculo).build())));
@@ -90,7 +100,9 @@ public class EntradaTest {
 	public void verificarEntradasActivasCarro() {
 		Vehiculo vehiculo = new CarroTestDataBuilder().build();
 		EntradaRepository entradaRepository = mock(EntradaRepository.class);
-		EntradaService entradaService = new EntradaService(entradaRepository);
+		CarroRepository carroRepository = mock(CarroRepository.class);
+		MotoRepository motoRepository = mock(MotoRepository.class);
+		EntradaService entradaService = new EntradaService(entradaRepository, carroRepository, motoRepository);
 		when(entradaRepository.listarEntradasActivas(TipoVehiculo.CARRO.toString()))
 				.thenReturn(Arrays.asList(EntradaBuilder.convertirAEntity(new EntradaTestDataBuilder()
 						.conFechaEntrada(FechaUtils.convertir(new Timestamp(new Date().getTime())))
@@ -103,7 +115,9 @@ public class EntradaTest {
 	public void ingresoNoPermitidoParaCarro() {
 		Vehiculo vehiculo = new CarroTestDataBuilder().conPlaca(PLACA_EMPIEZA_A).build();
 		EntradaRepository entradaRepository = mock(EntradaRepository.class);
-		EntradaService entradaService = new EntradaService(entradaRepository);
+		CarroRepository carroRepository = mock(CarroRepository.class);
+		MotoRepository motoRepository = mock(MotoRepository.class);
+		EntradaService entradaService = new EntradaService(entradaRepository, carroRepository, motoRepository);
 		try {
 			entradaService.registrarIngreso(vehiculo, FECHA_DOMINGO);
 			fail();

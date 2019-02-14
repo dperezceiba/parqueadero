@@ -2,6 +2,8 @@ package com.co.ceiba.establecimiento.dominio;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Entrada {
 	private Long idEntrada;
 	private LocalDateTime fechaEntrada;
@@ -17,7 +19,8 @@ public class Entrada {
 		this.fechaEntrada = fechaEntrada;
 		this.activo = activo;
 	}
-
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public LocalDateTime getFechaEntrada() {
 		return fechaEntrada;
 	}

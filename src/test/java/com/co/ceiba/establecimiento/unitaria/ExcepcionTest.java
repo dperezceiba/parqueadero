@@ -15,7 +15,9 @@ import com.co.ceiba.establecimiento.dominio.Entrada;
 import com.co.ceiba.establecimiento.dominio.Vehiculo;
 import com.co.ceiba.establecimiento.dominio.excepcion.EntradaException;
 import com.co.ceiba.establecimiento.dominio.excepcion.SalidaException;
+import com.co.ceiba.establecimiento.repositorio.CarroRepository;
 import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
+import com.co.ceiba.establecimiento.repositorio.MotoRepository;
 import com.co.ceiba.establecimiento.repositorio.SalidaRepository;
 import com.co.ceiba.establecimiento.servicio.EntradaService;
 import com.co.ceiba.establecimiento.servicio.SalidaService;
@@ -37,7 +39,9 @@ public class ExcepcionTest {
 		EntradaRepository entradaRepository = mock(EntradaRepository.class);
 		when(entradaRepository.cantidadEntradasActivas(TipoVehiculo.CARRO.toString()))
 				.thenReturn(ControlEntradaCarro.MAXIMO_CARRO);
-		EntradaService entradaService = new EntradaService(entradaRepository);
+		CarroRepository carroRepository = mock(CarroRepository.class);
+		MotoRepository motoRepository = mock(MotoRepository.class);
+		EntradaService entradaService = new EntradaService(entradaRepository, carroRepository, motoRepository);
 		entradaService.registrarIngreso(vehiculo, FECHA_PRUEBA);
 	}
 

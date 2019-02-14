@@ -1,15 +1,18 @@
 package com.co.ceiba.establecimiento.dominio;
 
+import com.co.ceiba.establecimiento.constante.ModalidadTarifa;
+import com.co.ceiba.establecimiento.constante.TipoVehiculo;
+
 public class Tarifa {
 	private Double valor;
-	private String tipoVehiculo;
-	private String modalidad;
+	private TipoVehiculo tipoVehiculo;
+	private ModalidadTarifa modalidad;
 	
 	public Tarifa(Double valor){
 		this.valor = valor;
 	}
 	
-	public Tarifa(Double valor, String tipoVehiculo, String modalidad) {
+	public Tarifa(Double valor, TipoVehiculo tipoVehiculo, ModalidadTarifa modalidad) {
 		this.valor = valor;
 		this.tipoVehiculo = tipoVehiculo;
 		this.modalidad = modalidad;
@@ -19,11 +22,11 @@ public class Tarifa {
 		return valor;
 	}
 
-	public String getTipoVehiculo() {
+	public TipoVehiculo getTipoVehiculo() {
 		return tipoVehiculo;
 	}
 
-	public String getModalidad() {
+	public ModalidadTarifa getModalidad() {
 		return modalidad;
 	}
 

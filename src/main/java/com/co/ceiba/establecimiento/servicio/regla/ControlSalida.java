@@ -1,31 +1,25 @@
 package com.co.ceiba.establecimiento.servicio.regla;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import com.co.ceiba.establecimiento.constante.ModalidadTarifa;
+import com.co.ceiba.establecimiento.constante.ValorTarifa;
 import com.co.ceiba.establecimiento.dominio.Tarifa;
 import com.co.ceiba.establecimiento.dominio.Vehiculo;
+import com.co.ceiba.establecimiento.util.TipoUtils;
 
 public class ControlSalida {
 
 	private Vehiculo vehiculo;
-	private List<Tarifa> tarifas;
 
-	public ControlSalida(Vehiculo vehiculo, List<Tarifa> tarifas) {
+	public ControlSalida(Vehiculo vehiculo) {
 		this.vehiculo = vehiculo;
-		this.tarifas = tarifas;
-	}
-
-	public Tarifa getTarifaPorModalidad(ModalidadTarifa modalidadTarifa) {
-		return tarifas.stream().filter(obj -> ModalidadTarifa.valueOf(obj.getModalidad()) == modalidadTarifa)
-				.findFirst().orElse(new Tarifa(BigDecimal.ZERO.doubleValue()));
 	}
 
 	public Double totalPagarSalida(Integer cantidadHoras) {
 		DetalleSalida detalleSalida = ReglaSalidaSingleton.getInstance().calcularDetalleSalida(vehiculo, cantidadHoras);
-		Tarifa tarifaDia = getTarifaPorModalidad(ModalidadTarifa.DIA);
-		Tarifa tarifaHora = getTarifaPorModalidad(ModalidadTarifa.HORA);
+		Tarifa tarifaDia = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoUtils.getTipoVehiculo(vehiculo),
+				ModalidadTarifa.DIA);
+		Tarifa tarifaHora = ValorTarifa.getInstance().getTarifaModalidadPorTipo(TipoUtils.getTipoVehiculo(vehiculo),
+				ModalidadTarifa.HORA);
 
 		Double total = tarifaDia.getValor() * detalleSalida.getDias();
 		total += tarifaHora.getValor() * detalleSalida.getHoras();

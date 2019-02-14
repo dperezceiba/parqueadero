@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.co.ceiba.establecimiento.builder.CarroBuilder;
@@ -16,40 +18,52 @@ import com.co.ceiba.establecimiento.dominio.Moto;
 import com.co.ceiba.establecimiento.dominio.Vehiculo;
 import com.co.ceiba.establecimiento.entidad.EntradaEntity;
 import com.co.ceiba.establecimiento.entidad.VehiculoEntity;
+import com.co.ceiba.establecimiento.repositorio.CarroRepository;
 import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
+import com.co.ceiba.establecimiento.repositorio.MotoRepository;
 import com.co.ceiba.establecimiento.servicio.regla.ControlEntrada;
 import com.co.ceiba.establecimiento.servicio.regla.ControlEntradaFactory;
 import com.co.ceiba.establecimiento.util.FechaUtils;
+import com.co.ceiba.establecimiento.util.TipoUtils;
 
 @Service
 public class EntradaService {
 
-	private EntradaRepository entradaRepository;
+	private static Logger LOGGER = LoggerFactory.getLogger(EntradaService.class);
 
-	public EntradaService(EntradaRepository entradaRepository) {
+	private EntradaRepository entradaRepository;
+	private CarroRepository carroRepository;
+	private MotoRepository motoRepository;
+
+	public EntradaService(EntradaRepository entradaRepository, CarroRepository carroRepository,
+			MotoRepository motoRepository) {
 		this.entradaRepository = entradaRepository;
+		this.carroRepository = carroRepository;
+		this.motoRepository = motoRepository;
 	}
 
 	public Entrada registrarIngreso(Vehiculo vehiculo, LocalDateTime fechaEntrada) {
 		ControlEntrada controlEntrada = ControlEntradaFactory.getInstance().getControlEntrada(vehiculo, fechaEntrada,
 				entradaRepository);
 		controlEntrada.validarIngreso();
+		LOGGER.info("Valido el ingreso del vehiculo................................");
+		VehiculoEntity vehiculoEntity = getVehiculoEntity(vehiculo);
 		EntradaEntity entradaEntity = new EntradaEntity();
 		entradaEntity.setActivo(Boolean.TRUE);
 		entradaEntity.setFechaEntrada(FechaUtils.convertir(fechaEntrada));
-		entradaEntity.setTipoVehiculo(getTipovehiculo(vehiculo));
-		entradaEntity.setVehiculoEntity(getVehiculoEntity(vehiculo));
+		entradaEntity.setTipoVehiculo(TipoUtils.getTipoVehiculo(vehiculo));
+		entradaEntity.setVehiculoEntity(vehiculoEntity);
 		entradaRepository.save(entradaEntity);
 		return EntradaBuilder.convertirADominio(entradaEntity);
 	}
 
-	private TipoVehiculo getTipovehiculo(Vehiculo vehiculo) {
-		return (vehiculo instanceof Carro) ? TipoVehiculo.CARRO : TipoVehiculo.MOTO;
-	}
-
 	private VehiculoEntity getVehiculoEntity(Vehiculo vehiculo) {
-		return (vehiculo instanceof Carro) ? CarroBuilder.convertirAEntity((Carro) vehiculo)
-				: MotoBuilder.convertirAEntity((Moto) vehiculo);
+		if (vehiculo instanceof Carro) {
+			return carroRepository.findById(vehiculo.getPlaca())
+					.orElse(CarroBuilder.convertirAEntity((Carro) vehiculo));
+		} else {
+			return motoRepository.findById(vehiculo.getPlaca()).orElse(MotoBuilder.convertirAEntity((Moto) vehiculo));
+		}
 	}
 
 	public List<Entrada> listarEntradasActivas(TipoVehiculo tipoVehiculo) {
