@@ -1,7 +1,6 @@
 package com.co.ceiba.establecimiento.dominio;
 
 public class Tarifa {
-	private Long id;
 	private Double valor;
 	private String tipoVehiculo;
 	private String modalidad;
@@ -14,19 +13,10 @@ public class Tarifa {
 		this.valor = valor;
 	}
 	
-	public Tarifa(Long id, Double valor, String tipoVehiculo, String modalidad) {
-		this.id = id;
+	public Tarifa(Double valor, String tipoVehiculo, String modalidad) {
 		this.valor = valor;
 		this.tipoVehiculo = tipoVehiculo;
 		this.modalidad = modalidad;
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Double getValor() {

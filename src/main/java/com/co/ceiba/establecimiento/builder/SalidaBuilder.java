@@ -22,8 +22,8 @@ public final class SalidaBuilder {
 		SalidaEntity salidaEntity = null;
 		if (salida != null) {
 			salidaEntity = new SalidaEntity();
-			salidaEntity.setId(salida.getId());
-			salidaEntity.setFechaSalida(salidaEntity.getFechaSalida());
+			salidaEntity.setId(salida.getIdSalida());
+			salidaEntity.setFechaSalida(FechaUtils.convertir(salida.getFechaSalida()));
 			salidaEntity.setValor(salida.getValor());
 			salidaEntity.setEntradaEntity(EntradaBuilder.convertirAEntity(salida.getEntrada()));
 		}

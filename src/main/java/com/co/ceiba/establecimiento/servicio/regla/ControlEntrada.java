@@ -5,17 +5,38 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.co.ceiba.establecimiento.dominio.Vehiculo;
+import com.co.ceiba.establecimiento.dominio.excepcion.EntradaException;
 import com.co.ceiba.establecimiento.entidad.EntradaEntity;
 import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
 
 public abstract class ControlEntrada {
 
 	private static final String CRITERIO_INICIO_RESTRICCION = "A";
+	public static final String MSG_NO_HAY_DISPONIBILIDAD = "Actualmente no se encuentran estacionamientos disponibles para este vehiculo";
+	public static final String MSG_INGRESO_NO_PERMITIDO = "Ingreso no permitido para vehiculos con esta esta placa";
+	public static final String MSG_INGRESO_EXISTENTE = "Vehiculo ya se encuentra ingresado";
 
-	public ControlEntrada() {
+	private Vehiculo vehiculo;
+	private LocalDateTime fechaEntrada;
+	protected EntradaRepository entradaRepository;
+
+	public ControlEntrada(Vehiculo vehiculo, LocalDateTime fechaEntrada, EntradaRepository entradaRepository) {
+		this.vehiculo = vehiculo;
+		this.fechaEntrada = fechaEntrada;
+		this.entradaRepository = entradaRepository;
 	}
 
-	public Boolean ingresoValidoSegunDia(Vehiculo vehiculo, LocalDateTime fechaEntrada) {
+	public void validarIngreso() {
+		if (!hayDisponibilidad()) {
+			throw new EntradaException(MSG_NO_HAY_DISPONIBILIDAD);
+		}else if(!ingresoValidoSegunDiaPlaca()) {
+			throw new EntradaException(MSG_INGRESO_NO_PERMITIDO);
+		}else if(existeEntradaRegistrada()) {
+			throw new EntradaException(MSG_INGRESO_EXISTENTE);
+		}
+	}
+
+	private Boolean ingresoValidoSegunDiaPlaca() {
 		if (vehiculo.getPlaca().toUpperCase().startsWith(CRITERIO_INICIO_RESTRICCION)) {
 			DayOfWeek diaSemana = fechaEntrada.getDayOfWeek();
 			return diaSemana != DayOfWeek.SUNDAY && diaSemana != DayOfWeek.MONDAY;
@@ -23,10 +44,10 @@ public abstract class ControlEntrada {
 		return true;
 	}
 
-	public Boolean existeEntradaRegistrada(Vehiculo vehiculo, EntradaRepository entradaRepository) {
+	private Boolean existeEntradaRegistrada() {
 		List<EntradaEntity> listado = entradaRepository.listarEntradasActivasPorVehiculo(vehiculo.getPlaca());
 		return !listado.isEmpty();
 	}
 
-	public abstract Boolean hayDisponibilidad(EntradaRepository entradaRepository);
+	protected abstract Boolean hayDisponibilidad();
 }

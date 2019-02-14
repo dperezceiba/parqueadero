@@ -12,8 +12,8 @@ public final class TarifaBuilder {
 	public static Tarifa convertirADominio(TarifaEntity tarifaEntity) {
 		Tarifa tarifa = null;
 		if (tarifaEntity != null) {
-			tarifa = new Tarifa(tarifaEntity.getId(), tarifaEntity.getValor(),
-					tarifaEntity.getTipoVehiculo().toString(), tarifaEntity.getModalidad().toString());
+			tarifa = new Tarifa(tarifaEntity.getValor(), tarifaEntity.getTipoVehiculo().toString(),
+					tarifaEntity.getModalidad().toString());
 		}
 		return tarifa;
 	}
@@ -22,7 +22,6 @@ public final class TarifaBuilder {
 		TarifaEntity tarifaEntity = null;
 		if (tarifa != null) {
 			tarifaEntity = new TarifaEntity();
-			tarifaEntity.setId(tarifa.getId());
 			tarifaEntity.setValor(tarifa.getValor());
 			tarifaEntity.setTipoVehiculo(TipoVehiculo.valueOf(tarifa.getTipoVehiculo()));
 			tarifaEntity.setModalidad(ModalidadTarifa.valueOf(tarifa.getModalidad()));

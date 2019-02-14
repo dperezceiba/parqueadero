@@ -3,7 +3,7 @@ package com.co.ceiba.establecimiento.dominio;
 import java.time.LocalDateTime;
 
 public class Salida {
-	private Long id;
+	private Long idSalida;
 	private LocalDateTime fechaSalida;
 	private Double valor;
 	private Entrada entrada;
@@ -12,18 +12,18 @@ public class Salida {
 		super();
 	}
 
-	public Salida(Long id, LocalDateTime fechaSalida, Double valor) {
-		this.id = id;
+	public Salida(Long idSalida, LocalDateTime fechaSalida, Double valor) {
+		this.idSalida = idSalida;
 		this.fechaSalida = fechaSalida;
 		this.valor = valor;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getIdSalida() {
+		return idSalida;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdSalida(Long idSalida) {
+		this.idSalida = idSalida;
 	}
 
 	public LocalDateTime getFechaSalida() {

@@ -1,18 +1,21 @@
 package com.co.ceiba.establecimiento.servicio.regla;
 
+import java.time.LocalDateTime;
+
 import com.co.ceiba.establecimiento.constante.TipoVehiculo;
+import com.co.ceiba.establecimiento.dominio.Vehiculo;
 import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
 
 public class ControlEntradaCarro extends ControlEntrada {
-
+	
 	public static final Integer MAXIMO_CARRO = 20;
-
-	public ControlEntradaCarro() {
-		super();
+	
+	public ControlEntradaCarro(Vehiculo vehiculo, LocalDateTime fechaEntrada, EntradaRepository entradaRepository) {
+		super(vehiculo, fechaEntrada, entradaRepository);
 	}
 
 	@Override
-	public Boolean hayDisponibilidad(EntradaRepository entradaRepository) {
+	public Boolean hayDisponibilidad() {
 		Integer cantidad = entradaRepository.cantidadEntradasActivas(TipoVehiculo.CARRO.toString());
 		return cantidad < MAXIMO_CARRO;
 	}

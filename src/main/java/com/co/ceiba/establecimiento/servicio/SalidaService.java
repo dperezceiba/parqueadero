@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.co.ceiba.establecimiento.builder.EntradaBuilder;
 import com.co.ceiba.establecimiento.builder.SalidaBuilder;
 import com.co.ceiba.establecimiento.builder.TarifaBuilder;
+import com.co.ceiba.establecimiento.builder.VehiculoBuilder;
 import com.co.ceiba.establecimiento.dominio.Entrada;
 import com.co.ceiba.establecimiento.dominio.Salida;
 import com.co.ceiba.establecimiento.dominio.excepcion.SalidaException;
@@ -23,6 +24,7 @@ import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
 import com.co.ceiba.establecimiento.repositorio.SalidaRepository;
 import com.co.ceiba.establecimiento.repositorio.TarifaRepository;
 import com.co.ceiba.establecimiento.servicio.regla.ControlSalida;
+import com.co.ceiba.establecimiento.util.FechaUtils;
 
 @Service
 public class SalidaService {
@@ -45,25 +47,27 @@ public class SalidaService {
 
 	@Transactional
 	public Salida generarSalida(Entrada entrada, LocalDateTime fechaSalida) {
-		Salida salida = calcularTotalSalida(entrada, fechaSalida);
-		SalidaEntity salidaEntity = SalidaBuilder.convertirAEntity(salida);
-		salidaRepository.save(salidaEntity);
-		deshabilitarEntrada(salidaEntity);
-		return SalidaBuilder.convertirADominio(salidaEntity);
-	}
-
-	private Salida calcularTotalSalida(Entrada entrada, LocalDateTime fechaSalida) {
-		Optional<EntradaEntity> resultado = entradaRepository.findById(entrada.getIdEntrada());
-		if (!resultado.isPresent()) {
+		Optional<EntradaEntity> optEntrada = entradaRepository.findById(entrada.getIdEntrada());
+		if (optEntrada.isPresent()) {
+			EntradaEntity entity = optEntrada.get();
+			Salida salida = calcularTotalSalida(entity, fechaSalida);
+			SalidaEntity salidaEntity = SalidaBuilder.convertirAEntity(salida);
+			salidaRepository.save(salidaEntity);
+			deshabilitarEntrada(salidaEntity);
+			return SalidaBuilder.convertirADominio(salidaEntity);
+		} else {
 			throw new SalidaException(MSG_ENTRADA_NO_ENCONTRADA);
 		}
-		validarSalida(resultado.get());
-		Long cantidadHoras = calcularCantidadHoras(entrada, fechaSalida);
-		List<TarifaEntity> tarifas = tarifaRepository.listarTarifas(entrada.getTipoVehiculo());
-		ControlSalida controlSalida = new ControlSalida(entrada.getVehiculo(),
+	}
+
+	private Salida calcularTotalSalida(EntradaEntity entity, LocalDateTime fechaSalida) {
+		validarSalida(entity);
+		Long cantidadHoras = calcularCantidadHoras(FechaUtils.convertir(entity.getFechaEntrada()), fechaSalida);
+		List<TarifaEntity> tarifas = tarifaRepository.listarTarifas(entity.getTipoVehiculo().toString());
+		ControlSalida controlSalida = new ControlSalida(VehiculoBuilder.convertirADominio(entity.getVehiculoEntity()),
 				tarifas.stream().map(TarifaBuilder::convertirADominio).collect(Collectors.toList()));
 		Salida salida = new Salida();
-		salida.setEntrada(EntradaBuilder.convertirADominio(resultado.get()));
+		salida.setEntrada(EntradaBuilder.convertirADominio(entity));
 		salida.setFechaSalida(fechaSalida);
 		salida.setValor(controlSalida.totalPagarSalida(cantidadHoras.intValue()));
 		return salida;
@@ -80,9 +84,8 @@ public class SalidaService {
 		}
 	}
 
-	private Long calcularCantidadHoras(Entrada entrada, LocalDateTime fechaSalida) {
-		Long diferencia = Timestamp.valueOf(fechaSalida).getTime()
-				- Timestamp.valueOf(entrada.getFechaEntrada()).getTime();
+	private Long calcularCantidadHoras(LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
+		Long diferencia = Timestamp.valueOf(fechaSalida).getTime() - Timestamp.valueOf(fechaEntrada).getTime();
 		return diferencia / HORA_MILISEGUNDOS;
 	}
 
