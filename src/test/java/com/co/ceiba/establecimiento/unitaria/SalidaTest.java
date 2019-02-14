@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.co.ceiba.establecimiento.builder.EntradaBuilder;
-import com.co.ceiba.establecimiento.builder.TarifaBuilder;
 import com.co.ceiba.establecimiento.constante.ModalidadTarifa;
 import com.co.ceiba.establecimiento.constante.TipoVehiculo;
 import com.co.ceiba.establecimiento.dominio.Entrada;
@@ -27,7 +25,6 @@ import com.co.ceiba.establecimiento.dominio.Vehiculo;
 import com.co.ceiba.establecimiento.entidad.SalidaEntity;
 import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
 import com.co.ceiba.establecimiento.repositorio.SalidaRepository;
-import com.co.ceiba.establecimiento.repositorio.TarifaRepository;
 import com.co.ceiba.establecimiento.servicio.EntradaService;
 import com.co.ceiba.establecimiento.servicio.SalidaService;
 import com.co.ceiba.establecimiento.testdatabuilder.CarroTestDataBuilder;
@@ -57,11 +54,7 @@ public class SalidaTest {
 		tarifas.add(tarifaHora);
 
 		EntradaRepository entradaRepository = mock(EntradaRepository.class);
-		TarifaRepository tarifaRepository = mock(TarifaRepository.class);
 		SalidaRepository salidaRepository = mock(SalidaRepository.class);
-
-		when(tarifaRepository.listarTarifas(TipoVehiculo.CARRO.toString()))
-				.thenReturn(tarifas.stream().map(TarifaBuilder::convertirAEntity).collect(Collectors.toList()));
 
 		EntradaService entradaService = new EntradaService(entradaRepository);
 
@@ -73,7 +66,7 @@ public class SalidaTest {
 
 		when(salidaRepository.save(Mockito.any(SalidaEntity.class))).thenReturn(new SalidaEntity());
 
-		SalidaService salidaService = new SalidaService(entradaRepository, tarifaRepository, salidaRepository);
+		SalidaService salidaService = new SalidaService(entradaRepository, salidaRepository);
 
 		Salida salida = salidaService.generarSalida(entrada, FECHA_SALIDA);
 		assertNotNull(salida);
@@ -91,11 +84,7 @@ public class SalidaTest {
 		tarifas.add(tarifaHora);
 
 		EntradaRepository entradaRepository = mock(EntradaRepository.class);
-		TarifaRepository tarifaRepository = mock(TarifaRepository.class);
 		SalidaRepository salidaRepository = mock(SalidaRepository.class);
-
-		when(tarifaRepository.listarTarifas(TipoVehiculo.MOTO.toString()))
-				.thenReturn(tarifas.stream().map(TarifaBuilder::convertirAEntity).collect(Collectors.toList()));
 
 		EntradaService entradaService = new EntradaService(entradaRepository);
 
@@ -107,7 +96,7 @@ public class SalidaTest {
 
 		when(salidaRepository.save(Mockito.any(SalidaEntity.class))).thenReturn(new SalidaEntity());
 
-		SalidaService salidaService = new SalidaService(entradaRepository, tarifaRepository, salidaRepository);
+		SalidaService salidaService = new SalidaService(entradaRepository, salidaRepository);
 
 		Salida salida = salidaService.generarSalida(entrada, FECHA_SALIDA);
 		assertNotNull(salida);

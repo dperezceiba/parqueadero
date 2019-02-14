@@ -7,18 +7,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CeibaEstablecimientoApplication implements CommandLineRunner{
-	
+public class CeibaEstablecimientoApplication implements CommandLineRunner {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(CeibaEstablecimientoApplication.class);
-	
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(CeibaEstablecimientoApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		LOGGER.info("Tareas a ejecutar al subir la aplicacion...");
+		LOGGER.info("Verificando las tarifas...");
 	}
 
 }
-

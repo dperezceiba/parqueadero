@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -12,17 +11,16 @@ import org.springframework.stereotype.Service;
 
 import com.co.ceiba.establecimiento.builder.EntradaBuilder;
 import com.co.ceiba.establecimiento.builder.SalidaBuilder;
-import com.co.ceiba.establecimiento.builder.TarifaBuilder;
 import com.co.ceiba.establecimiento.builder.VehiculoBuilder;
+import com.co.ceiba.establecimiento.constante.ValorTarifa;
 import com.co.ceiba.establecimiento.dominio.Entrada;
 import com.co.ceiba.establecimiento.dominio.Salida;
+import com.co.ceiba.establecimiento.dominio.Tarifa;
 import com.co.ceiba.establecimiento.dominio.excepcion.SalidaException;
 import com.co.ceiba.establecimiento.entidad.EntradaEntity;
 import com.co.ceiba.establecimiento.entidad.SalidaEntity;
-import com.co.ceiba.establecimiento.entidad.TarifaEntity;
 import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
 import com.co.ceiba.establecimiento.repositorio.SalidaRepository;
-import com.co.ceiba.establecimiento.repositorio.TarifaRepository;
 import com.co.ceiba.establecimiento.servicio.regla.ControlSalida;
 import com.co.ceiba.establecimiento.util.FechaUtils;
 
@@ -35,13 +33,10 @@ public class SalidaService {
 	public static final String MSG_SALIDA_REGISTRADA = "Ya se encuentra una salida registrada para esta entrada";
 
 	private EntradaRepository entradaRepository;
-	private TarifaRepository tarifaRepository;
 	private SalidaRepository salidaRepository;
 
-	public SalidaService(EntradaRepository entradaRepository, TarifaRepository tarifaRepository,
-			SalidaRepository salidaRepository) {
+	public SalidaService(EntradaRepository entradaRepository, SalidaRepository salidaRepository) {
 		this.entradaRepository = entradaRepository;
-		this.tarifaRepository = tarifaRepository;
 		this.salidaRepository = salidaRepository;
 	}
 
@@ -63,9 +58,9 @@ public class SalidaService {
 	private Salida calcularTotalSalida(EntradaEntity entity, LocalDateTime fechaSalida) {
 		validarSalida(entity);
 		Long cantidadHoras = calcularCantidadHoras(FechaUtils.convertir(entity.getFechaEntrada()), fechaSalida);
-		List<TarifaEntity> tarifas = tarifaRepository.listarTarifas(entity.getTipoVehiculo().toString());
+		List<Tarifa> tarifas = ValorTarifa.getTarifasPorTipo(entity.getTipoVehiculo());
 		ControlSalida controlSalida = new ControlSalida(VehiculoBuilder.convertirADominio(entity.getVehiculoEntity()),
-				tarifas.stream().map(TarifaBuilder::convertirADominio).collect(Collectors.toList()));
+				tarifas);
 		Salida salida = new Salida();
 		salida.setEntrada(EntradaBuilder.convertirADominio(entity));
 		salida.setFechaSalida(fechaSalida);
