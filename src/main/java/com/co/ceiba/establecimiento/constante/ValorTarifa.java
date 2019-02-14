@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import com.co.ceiba.establecimiento.dominio.Tarifa;
 
-public class ValorTarifa {
+public final class ValorTarifa {
 	
 	public static final Double VALOR_HORA_CARRO = 1000.0;
 	public static final Double VALOR_HORA_MOTO = 500.0;
@@ -17,6 +17,7 @@ public class ValorTarifa {
 	private static final ValorTarifa INSTANCE = new ValorTarifa();
 
 	private List<Tarifa> tarifas;
+	
 	private ValorTarifa() {
 		tarifas = new ArrayList<>();
 		tarifas.add(new Tarifa(VALOR_DIA_CARRO, TipoVehiculo.CARRO, ModalidadTarifa.DIA));
