@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.co.ceiba.establecimiento.dominio.Carro;
 import com.co.ceiba.establecimiento.dominio.Entrada;
 import com.co.ceiba.establecimiento.dominio.TipoVehiculo;
 import com.co.ceiba.establecimiento.dominio.Vehiculo;
 import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
 import com.co.ceiba.establecimiento.servicio.regla.ControlEntrada;
-import com.co.ceiba.establecimiento.servicio.regla.ControlEntradaFactory;
+import com.co.ceiba.establecimiento.servicio.regla.ControlEntradaCarro;
+import com.co.ceiba.establecimiento.servicio.regla.ControlEntradaMoto;
 
 @Service
 public class EntradaService {
@@ -22,8 +24,7 @@ public class EntradaService {
 	}
 
 	public Entrada registrarIngreso(Vehiculo vehiculo, LocalDateTime fechaEntrada) {
-		ControlEntrada controlEntrada = ControlEntradaFactory.getInstance().getControlEntrada(vehiculo, fechaEntrada,
-				entradaRepository);
+		ControlEntrada controlEntrada = getControlEntrada(vehiculo, fechaEntrada, entradaRepository);
 		controlEntrada.validarIngreso();
 		Entrada entrada = new Entrada();
 		entrada.setActivo(Boolean.TRUE);
@@ -42,6 +43,15 @@ public class EntradaService {
 
 	public List<Entrada> listarActivas() {
 		return entradaRepository.listarActivas();
+	}
+
+	public ControlEntrada getControlEntrada(Vehiculo vehiculo, LocalDateTime fechaEntrada,
+			EntradaRepository entradaRepository) {
+		if (vehiculo instanceof Carro) {
+			return new ControlEntradaCarro(vehiculo, fechaEntrada, entradaRepository);
+		} else {
+			return new ControlEntradaMoto(vehiculo, fechaEntrada, entradaRepository);
+		}
 	}
 
 }
