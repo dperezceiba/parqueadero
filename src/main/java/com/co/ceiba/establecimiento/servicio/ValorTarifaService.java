@@ -1,24 +1,27 @@
-package com.co.ceiba.establecimiento.constante;
+package com.co.ceiba.establecimiento.servicio;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.co.ceiba.establecimiento.dominio.Tarifa;
+import org.springframework.stereotype.Service;
 
-public final class ValorTarifa {
+import com.co.ceiba.establecimiento.dominio.ModalidadTarifa;
+import com.co.ceiba.establecimiento.dominio.Tarifa;
+import com.co.ceiba.establecimiento.dominio.TipoVehiculo;
+
+@Service
+public class ValorTarifaService {
 	
 	public static final Double VALOR_HORA_CARRO = 1000.0;
 	public static final Double VALOR_HORA_MOTO = 500.0;
 	public static final Double VALOR_DIA_CARRO = 8000.0;
 	public static final Double VALOR_DIA_MOTO = 4000.0;
-	
-	private static final ValorTarifa INSTANCE = new ValorTarifa();
 
 	private List<Tarifa> tarifas;
 	
-	private ValorTarifa() {
+	public ValorTarifaService() {
 		tarifas = new ArrayList<>();
 		tarifas.add(new Tarifa(VALOR_DIA_CARRO, TipoVehiculo.CARRO, ModalidadTarifa.DIA));
 		tarifas.add(new Tarifa(VALOR_HORA_CARRO, TipoVehiculo.CARRO, ModalidadTarifa.HORA));
@@ -46,10 +49,6 @@ public final class ValorTarifa {
 		return tarifas.stream()
 				.filter(obj -> obj.getModalidad() == modalidadTarifa && obj.getTipoVehiculo() == tipoVehiculo)
 				.findFirst().orElse(new Tarifa(BigDecimal.ZERO.doubleValue()));
-	}
-
-	public static ValorTarifa getInstance() {
-		return INSTANCE;
 	}
 
 }

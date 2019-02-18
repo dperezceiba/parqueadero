@@ -13,7 +13,7 @@ public final class SalidaBuilder {
 		if (salidaEntity != null) {
 			salida = new Salida(salidaEntity.getId(), FechaUtils.convertir(salidaEntity.getFechaSalida()),
 					salidaEntity.getValor());
-			salida.setEntrada(EntradaBuilder.convertirADominio(salidaEntity.getEntradaEntity()));
+			salida.setEntrada(EntradaBuilder.convertirADominio(salidaEntity.getEntrada()));
 		}
 		return salida;
 	}
@@ -25,7 +25,7 @@ public final class SalidaBuilder {
 			salidaEntity.setId(salida.getIdSalida());
 			salidaEntity.setFechaSalida(FechaUtils.convertir(salida.getFechaSalida()));
 			salidaEntity.setValor(salida.getValor());
-			salidaEntity.setEntradaEntity(EntradaBuilder.convertirAEntity(salida.getEntrada()));
+			salidaEntity.setEntrada(EntradaBuilder.convertirAEntity(salida.getEntrada()));
 		}
 		return salidaEntity;
 	}

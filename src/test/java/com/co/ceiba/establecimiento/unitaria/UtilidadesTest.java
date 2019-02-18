@@ -1,10 +1,12 @@
 package com.co.ceiba.establecimiento.unitaria;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +17,6 @@ import com.co.ceiba.establecimiento.builder.CarroBuilder;
 import com.co.ceiba.establecimiento.builder.EntradaBuilder;
 import com.co.ceiba.establecimiento.builder.MotoBuilder;
 import com.co.ceiba.establecimiento.builder.SalidaBuilder;
-import com.co.ceiba.establecimiento.constante.ValorTarifa;
 import com.co.ceiba.establecimiento.dominio.Carro;
 import com.co.ceiba.establecimiento.dominio.Entrada;
 import com.co.ceiba.establecimiento.dominio.Moto;
@@ -24,6 +25,7 @@ import com.co.ceiba.establecimiento.entidad.CarroEntity;
 import com.co.ceiba.establecimiento.entidad.EntradaEntity;
 import com.co.ceiba.establecimiento.entidad.MotoEntity;
 import com.co.ceiba.establecimiento.entidad.SalidaEntity;
+import com.co.ceiba.establecimiento.servicio.ValorTarifaService;
 import com.co.ceiba.establecimiento.util.FechaUtils;
 
 @RunWith(SpringRunner.class)
@@ -46,6 +48,7 @@ public class UtilidadesTest {
 		assertNull(CarroBuilder.convertirADominio(carroEntity));
 		assertNull(SalidaBuilder.convertirADominio(salidaEntity));
 		assertNull(FechaUtils.convertir(timestamp));
+		assertNotNull(FechaUtils.convertir(new Timestamp(new Date().getTime())));
 		assertNull(EntradaBuilder.convertirADominio(entradaEntity));
 		assertNull(EntradaBuilder.convertirAEntity(entrada));
 		assertNull(SalidaBuilder.convertirAEntity(salida));
@@ -61,7 +64,7 @@ public class UtilidadesTest {
 
 	@Test
 	public void probarTarifas() {
-		ValorTarifa valorTarifa = ValorTarifa.getInstance();
+		ValorTarifaService valorTarifa = new ValorTarifaService();
 		assertFalse(valorTarifa.getTodasTarifas().isEmpty());
 	}
 

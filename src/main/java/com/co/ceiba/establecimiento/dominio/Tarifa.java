@@ -1,8 +1,5 @@
 package com.co.ceiba.establecimiento.dominio;
 
-import com.co.ceiba.establecimiento.constante.ModalidadTarifa;
-import com.co.ceiba.establecimiento.constante.TipoVehiculo;
-
 public class Tarifa {
 	private Double valor;
 	private TipoVehiculo tipoVehiculo;

@@ -4,9 +4,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.co.ceiba.establecimiento.dominio.Entrada;
 import com.co.ceiba.establecimiento.dominio.Vehiculo;
 import com.co.ceiba.establecimiento.dominio.excepcion.EntradaException;
-import com.co.ceiba.establecimiento.entidad.EntradaEntity;
 import com.co.ceiba.establecimiento.repositorio.EntradaRepository;
 
 public abstract class ControlEntrada {
@@ -45,7 +45,7 @@ public abstract class ControlEntrada {
 	}
 
 	private Boolean existeEntradaRegistrada() {
-		List<EntradaEntity> listado = entradaRepository.listarEntradasActivasPorVehiculo(vehiculo.getPlaca());
+		List<Entrada> listado = entradaRepository.listarActivasPorVehiculo(vehiculo.getPlaca());
 		return !listado.isEmpty();
 	}
 

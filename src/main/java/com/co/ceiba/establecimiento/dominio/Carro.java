@@ -19,5 +19,10 @@ public class Carro extends Vehiculo {
 	public void setModelo(String modelo) {
 		this.modelo = modelo;
 	}
+	
+	@Override
+	public TipoVehiculo getTipoVehiculo() {
+		return TipoVehiculo.CARRO;
+	}
 
 }

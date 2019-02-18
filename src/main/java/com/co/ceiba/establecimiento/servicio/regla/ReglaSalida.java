@@ -3,20 +3,23 @@ package com.co.ceiba.establecimiento.servicio.regla;
 import com.co.ceiba.establecimiento.dominio.Moto;
 import com.co.ceiba.establecimiento.dominio.Vehiculo;
 
-public final class ReglaSalidaSingleton {
+public class ReglaSalida {
 
 	private static final Double CILINDRAJE_SUP = 500.0;
 	public static final Double VALOR_EXCEDENTE = 2000.0;
 
 	private static final Integer LIMITE_DIA_INFERIOR = 9;
 	private static final Integer LIMITE_DIA_SUPERIOR = 24;
-
-	private static final ReglaSalidaSingleton INSTANCE = new ReglaSalidaSingleton();
-
-	private ReglaSalidaSingleton() {
+	
+	private Vehiculo vehiculo;
+	private Integer cantidadHoras;
+	
+	public ReglaSalida(Vehiculo vehiculo, Integer cantidadHoras) {
+		this.vehiculo = vehiculo;
+		this.cantidadHoras = cantidadHoras;
 	}
 
-	public DetalleSalida calcularDetalleSalida(Vehiculo vehiculo, Integer cantidadHoras) {
+	public DetalleSalida calcularDetalleSalida() {
 		Integer dias = 0;
 		Integer horas = 0;
 		DetalleSalida calculoTiempo = new DetalleSalida();
@@ -54,8 +57,5 @@ public final class ReglaSalidaSingleton {
 		return moto.getCilindraje() > CILINDRAJE_SUP;
 	}
 
-	public static ReglaSalidaSingleton getInstance() {
-		return INSTANCE;
-	}
 
 }

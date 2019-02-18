@@ -3,7 +3,6 @@ package com.co.ceiba.establecimiento.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,22 +25,20 @@ public class EntradaController {
 	}
 
 	@PostMapping("/carro")
-	public ResponseEntity<Entrada> registrarEntrada(@RequestBody Carro carro) {
+	public Entrada registrar(@RequestBody Carro carro) {
 		LocalDateTime fechaEntrada = LocalDateTime.now();
-		Entrada entrada = entradaService.registrarIngreso(carro, fechaEntrada);
-		return ResponseEntity.ok(entrada);
+		return entradaService.registrarIngreso(carro, fechaEntrada);
 	}
 
 	@PostMapping("/moto")
-	public ResponseEntity<Entrada> registrarEntrada(@RequestBody Moto moto) {
+	public Entrada registrar(@RequestBody Moto moto) {
 		LocalDateTime fechaEntrada = LocalDateTime.now();
-		Entrada entrada = entradaService.registrarIngreso(moto, fechaEntrada);
-		return ResponseEntity.ok(entrada);
+		return entradaService.registrarIngreso(moto, fechaEntrada);
 	}
 
 	@GetMapping("/activas")
-	public List<Entrada> listarEntradasActivas() {
-		return entradaService.listarEntradasActivas();
+	public List<Entrada> listarActivas() {
+		return entradaService.listarActivas();
 	}
 
 }

@@ -20,7 +20,7 @@ public class SalidaEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_entrada")
-	private EntradaEntity entradaEntity;
+	private EntradaEntity entrada;
 
 	@Column(name = "fecha_salida", nullable = false)
 	private Timestamp fechaSalida;
@@ -36,12 +36,12 @@ public class SalidaEntity {
 		this.id = id;
 	}
 
-	public EntradaEntity getEntradaEntity() {
-		return entradaEntity;
+	public EntradaEntity getEntrada() {
+		return entrada;
 	}
 
-	public void setEntradaEntity(EntradaEntity entradaEntity) {
-		this.entradaEntity = entradaEntity;
+	public void setEntrada(EntradaEntity entrada) {
+		this.entrada = entrada;
 	}
 
 	public Timestamp getFechaSalida() {

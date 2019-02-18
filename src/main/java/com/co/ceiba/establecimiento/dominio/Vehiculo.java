@@ -1,9 +1,9 @@
 package com.co.ceiba.establecimiento.dominio;
 
 public class Vehiculo {
-	
+
 	private String placa;
-	
+
 	public Vehiculo() {
 		super();
 	}
@@ -20,6 +20,9 @@ public class Vehiculo {
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
-	
-	
+
+	public TipoVehiculo getTipoVehiculo() {
+		return TipoVehiculo.CARRO;
+	}
+
 }

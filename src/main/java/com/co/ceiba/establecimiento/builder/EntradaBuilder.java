@@ -1,9 +1,9 @@
 package com.co.ceiba.establecimiento.builder;
 
-import com.co.ceiba.establecimiento.constante.TipoVehiculo;
 import com.co.ceiba.establecimiento.dominio.Carro;
 import com.co.ceiba.establecimiento.dominio.Entrada;
 import com.co.ceiba.establecimiento.dominio.Moto;
+import com.co.ceiba.establecimiento.dominio.TipoVehiculo;
 import com.co.ceiba.establecimiento.entidad.CarroEntity;
 import com.co.ceiba.establecimiento.entidad.EntradaEntity;
 import com.co.ceiba.establecimiento.entidad.MotoEntity;
@@ -19,11 +19,11 @@ public final class EntradaBuilder {
 		if (entradaEntity != null) {
 			entrada = new Entrada(entradaEntity.getId(), FechaUtils.convertir(entradaEntity.getFechaEntrada()),
 					entradaEntity.getActivo());
-			entrada.setTipoVehiculo(entradaEntity.getTipoVehiculo().toString());
-			if (entradaEntity.getVehiculoEntity() instanceof CarroEntity) {
-				entrada.setVehiculo(CarroBuilder.convertirADominio((CarroEntity) entradaEntity.getVehiculoEntity()));
+			entrada.setTipoVehiculo(TipoVehiculo.valueOf(entradaEntity.getTipoVehiculo()));
+			if (entradaEntity.getVehiculo() instanceof CarroEntity) {
+				entrada.setVehiculo(CarroBuilder.convertirADominio((CarroEntity) entradaEntity.getVehiculo()));
 			} else {
-				entrada.setVehiculo(MotoBuilder.convertirADominio((MotoEntity) entradaEntity.getVehiculoEntity()));
+				entrada.setVehiculo(MotoBuilder.convertirADominio((MotoEntity) entradaEntity.getVehiculo()));
 			}
 		}
 		return entrada;
@@ -37,10 +37,10 @@ public final class EntradaBuilder {
 			entradaEntity.setFechaEntrada(FechaUtils.convertir(entrada.getFechaEntrada()));
 			entradaEntity.setId(entrada.getIdEntrada());
 			if (entrada.getVehiculo() instanceof Carro) {
-				entradaEntity.setTipoVehiculo(TipoVehiculo.CARRO);
+				entradaEntity.setTipoVehiculo(TipoVehiculo.CARRO.toString());
 				entradaEntity.setVehiculoEntity(CarroBuilder.convertirAEntity((Carro) entrada.getVehiculo()));
 			} else {
-				entradaEntity.setTipoVehiculo(TipoVehiculo.MOTO);
+				entradaEntity.setTipoVehiculo(TipoVehiculo.MOTO.toString());
 				entradaEntity.setVehiculoEntity(MotoBuilder.convertirAEntity((Moto) entrada.getVehiculo()));
 			}
 		}

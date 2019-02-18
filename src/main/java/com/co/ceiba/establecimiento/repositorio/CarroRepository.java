@@ -1,9 +1,9 @@
 package com.co.ceiba.establecimiento.repositorio;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
-import com.co.ceiba.establecimiento.entidad.CarroEntity;
+import com.co.ceiba.establecimiento.dominio.Carro;
 
-public interface CarroRepository extends JpaRepository<CarroEntity, String>{
-
+public interface CarroRepository{
+	public Optional<Carro> buscarPorPlaca(String placa);
 }

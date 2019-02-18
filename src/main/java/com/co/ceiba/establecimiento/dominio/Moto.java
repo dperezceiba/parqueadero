@@ -19,5 +19,10 @@ public class Moto extends Vehiculo {
 	public void setCilindraje(Double cilindraje) {
 		this.cilindraje = cilindraje;
 	}
+	
+	@Override
+	public TipoVehiculo getTipoVehiculo() {
+		return TipoVehiculo.MOTO;
+	}
 
 }

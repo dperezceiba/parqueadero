@@ -2,6 +2,8 @@ package com.co.ceiba.establecimiento.controller;
 
 import java.util.Calendar;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,6 +17,8 @@ import com.co.ceiba.establecimiento.dominio.excepcion.SalidaException;
 @ControllerAdvice
 public class ErrorHandlerAdvice {
 
+	private static final Logger logger = LoggerFactory.getLogger(ErrorHandlerAdvice.class);
+
 	@ExceptionHandler(EntradaException.class)
 	public ResponseEntity<ErrorResponse> handleException(EntradaException ex, WebRequest request) {
 		ErrorResponse excepcion = new ErrorResponse(Calendar.getInstance().getTime(), ex.getMessage(),
@@ -27,6 +31,14 @@ public class ErrorHandlerAdvice {
 		ErrorResponse excepcion = new ErrorResponse(Calendar.getInstance().getTime(), ex.getMessage(),
 				request.getDescription(false));
 		return new ResponseEntity<>(excepcion, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorResponse> handleException(Exception ex, WebRequest request) {
+		logger.error(ex.getMessage(), ex);
+		ErrorResponse excepcion = new ErrorResponse(Calendar.getInstance().getTime(), ex.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(excepcion, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

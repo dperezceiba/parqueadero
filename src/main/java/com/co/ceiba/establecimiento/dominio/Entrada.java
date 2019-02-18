@@ -9,7 +9,7 @@ public class Entrada {
 	private LocalDateTime fechaEntrada;
 	private Boolean activo;
 	private Vehiculo vehiculo;
-	private String tipoVehiculo;
+	private TipoVehiculo tipoVehiculo;
 
 	public Entrada() {
 	}
@@ -45,11 +45,11 @@ public class Entrada {
 		this.vehiculo = vehiculo;
 	}
 
-	public String getTipoVehiculo() {
+	public TipoVehiculo getTipoVehiculo() {
 		return tipoVehiculo;
 	}
 
-	public void setTipoVehiculo(String tipoVehiculo) {
+	public void setTipoVehiculo(TipoVehiculo tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
 

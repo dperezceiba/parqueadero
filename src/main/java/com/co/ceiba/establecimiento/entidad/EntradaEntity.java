@@ -5,15 +5,11 @@ import java.sql.Timestamp;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.co.ceiba.establecimiento.constante.TipoVehiculo;
 
 @Entity(name = "entrada")
 public class EntradaEntity {
@@ -32,11 +28,10 @@ public class EntradaEntity {
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH,
 			CascadeType.DETACH })
 	@JoinColumn(name = "placa")
-	private VehiculoEntity vehiculoEntity;
+	private VehiculoEntity vehiculo;
 
-	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo_vehiculo", nullable = false)
-	private TipoVehiculo tipoVehiculo;
+	private String tipoVehiculo;
 
 	public Long getId() {
 		return id;
@@ -62,19 +57,19 @@ public class EntradaEntity {
 		this.activo = activo;
 	}
 
-	public VehiculoEntity getVehiculoEntity() {
-		return vehiculoEntity;
+	public VehiculoEntity getVehiculo() {
+		return vehiculo;
 	}
 
-	public void setVehiculoEntity(VehiculoEntity vehiculoEntity) {
-		this.vehiculoEntity = vehiculoEntity;
+	public void setVehiculoEntity(VehiculoEntity vehiculo) {
+		this.vehiculo = vehiculo;
 	}
 
-	public TipoVehiculo getTipoVehiculo() {
+	public String getTipoVehiculo() {
 		return tipoVehiculo;
 	}
 
-	public void setTipoVehiculo(TipoVehiculo tipoVehiculo) {
+	public void setTipoVehiculo(String tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
 
