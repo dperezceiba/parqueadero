@@ -46,6 +46,8 @@ public class EntradaIntegrationTest {
 
 	private static final String URL_LISTADO_ENTRADAS = "/entrada/v1/activas";
 
+	private static final String URL_LISTADO_ENTRADAS_V2 = "/entrada/v2/activas";
+
 	@LocalServerPort
 	private int port;
 
@@ -95,11 +97,18 @@ public class EntradaIntegrationTest {
 		HttpEntity<Carro> entityCarro = new HttpEntity<>(carro, headers);
 		restTemplate.exchange(createURLWithPort(URL_INGRESO_CARRO), HttpMethod.POST, entityCarro, String.class);
 
-		ResponseEntity<List<Entrada>> response = restTemplate.exchange(createURLWithPort(URL_LISTADO_ENTRADAS), HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<Entrada>>() {
+		ResponseEntity<List<Entrada>> response = restTemplate.exchange(createURLWithPort(URL_LISTADO_ENTRADAS),
+				HttpMethod.GET, null, new ParameterizedTypeReference<List<Entrada>>() {
 				});
 		List<Entrada> listado = response.getBody();
 		assertFalse(listado.isEmpty());
+	}
+
+	@Test(expected = Exception.class)
+	public void testOtraExcepcion() {
+		restTemplate.exchange(createURLWithPort(URL_LISTADO_ENTRADAS_V2), HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<Entrada>>() {
+				});
 	}
 
 	private String createURLWithPort(String uri) {

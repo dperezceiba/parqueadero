@@ -31,7 +31,6 @@ public class SalidaIntegrationTest {
 	private static final String URL_INGRESO_CARRO = "/entrada/v1/carro";
 	private static final String URL_INGRESO_MOTO = "/entrada/v1/moto";
 
-	
 	@LocalServerPort
 	private int port;
 
@@ -51,7 +50,7 @@ public class SalidaIntegrationTest {
 		HttpStatus codigo = responseSalida.getStatusCode();
 		assertEquals(HttpStatus.OK, codigo);
 	}
-	
+
 	@Test
 	public void registrarSalidaVehiculoMoto() {
 		Vehiculo vehiculo = new MotoTestDataBuilder().conPlaca(PLACA_PRUEBA6).build();
